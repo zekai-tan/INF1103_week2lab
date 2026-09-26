@@ -21,6 +21,11 @@ def load_inventory():
     except FileNotFoundError:
         return 0.0, []
 
+def save_inventory(total, history):
+    with open("inventory.txt", "w") as file:
+        file.write(f"{total}\n")
+        file.write(",".join(str(value) for value in history))
+
 def get_valid_input():
     user_input = input("Enter stock quantity per delivery or type 'quit': ").strip()
     if user_input.lower() == 'quit':
@@ -71,7 +76,7 @@ def main():
             print("Warning: Overstock limit exceeded!\n")
             break
 
-    print(f"Transaction history: {history}")
+    save_inventory(total_inventory, history)
     generate_report(total_inventory, rejected_entries)
     print(f"Total processed entries: {processed_entries}")
 
