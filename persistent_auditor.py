@@ -43,7 +43,7 @@ def generate_report(total_units, failed_attempts):
     print(f"Total rejected entries: {failed_attempts}")
 
 def main():
-    total_inventory = 0
+    total_inventory, history = load_inventory()
     processed_entries = 0
     rejected_entries = 0
 
@@ -60,6 +60,7 @@ def main():
             continue
 
         total_inventory = process_delivery(total_inventory, quantity)
+        history.append(quantity)
         delivery_tax = calculate_tax(quantity)
         processed_entries += 1
 
@@ -70,15 +71,11 @@ def main():
             print("Warning: Overstock limit exceeded!\n")
             break
 
+    print(f"Transaction history: {history}")
     generate_report(total_inventory, rejected_entries)
     print(f"Total processed entries: {processed_entries}")
 
 main()
-
-total, history = load_inventory()
-
-print("Loaded total:", total)
-print("Loaded history:", history)
 
 
 
